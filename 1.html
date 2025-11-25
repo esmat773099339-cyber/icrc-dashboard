@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة تحكم ICRC - المتابعة والتقييم</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: #f8f9fa;
+      color: #2d3748;
+      direction: rtl;
+    }
+    header {
+      background: linear-gradient(135deg, #b91c1c, #ef4444);
+      color: #fff;
+      padding: 20px 40px;
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .container {
+      padding: 20px 30px 40px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+    }
+    .card h3 {
+      margin: 0 0 15px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #111827;
+      text-align: center;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .chart-container {
+      position: relative;
+      height: 250px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    لوحة تحكم ICRC - المتابعة والتقييم
+  </header>
+  <div class="container">
+    <div class="grid">
+      <!-- توزيع الجنس -->
+      <div class="card">
+        <h3>توزيع الجنس</h3>
+        <div class="chart-container">
+          <canvas id="genderChart"></canvas>
+        </div>
+      </div>
+      <!-- موافقة المقابلة -->
+      <div class="card">
+        <h3>موافقة المقابلة</h3>
+        <div class="chart-container">
+          <canvas id="consentChart"></canvas>
+        </div>
+      </div>
+      <!-- حالة المشروع -->
+      <div class="card">
+        <h3>حالة المشروع</h3>
+        <div class="chart-container">
+          <canvas id="statusChart"></canvas>
+        </div>
+      </div>
+      <!-- فائدة التدريب -->
+      <div class="card">
+        <h3>فائدة التدريب</h3>
+        <div class="chart-container">
+          <canvas id="usefulnessChart"></canvas>
+        </div>
+      </div>
+      <!-- نمو قاعدة العملاء -->
+      <div class="card">
+        <h3>نمو قاعدة العملاء</h3>
+        <div class="chart-container">
+          <canvas id="clientsChart"></canvas>
+        </div>
+      </div>
+      <!-- توسعة الأعمال -->
+      <div class="card">
+        <h3>توسعة الأعمال</h3>
+        <div class="chart-container">
+          <canvas id="expansionChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    لوحة تحكم مولدة من تحليلات Excel - متابعة ICRC
+  </footer>
+
+  <script>
+    // بيانات افتراضية (يمكن استبدالها ببيانات حقيقية)
+    const data = {
+      gender: [65, 35],
+      consent: [99, 1],
+      status: [30, 60, 9],
+      usefulness: [98, 1],
+      clients: [83, 16],
+      expansion: [96, 3],
+    };
+
+    // إعدادات عامة للرسومات
+    Chart.defaults.font.family = "'Cairo', sans-serif";
+    Chart.defaults.color = '#4a5568';
+
+    // رسم بياني لتوزيع الجنس
+    new Chart(document.getElementById('genderChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['ذكر', 'أنثى'],
+        datasets: [{
+          data: data.gender,
+          backgroundColor: ['#1DA0C4', '#EE1313'],
+          borderColor: '#ffffff',
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: {
+            enabled: true,
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+          }
+        }
+      }
+    });
+
+    // رسم بياني لموافقة المقابلة
+    new Chart(document.getElementById('consentChart'), {
+      type: 'pie',
+      data: {
+        labels: ['نعم', 'لا'],
+        datasets: [{
+          data: data.consent,
+          backgroundColor: ['#1DA0C4', '#EE1313'],
+          borderColor: '#ffffff',
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: {
+            enabled: true,
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+          }
+        }
+      }
+    });
+
+    // رسم بياني لحالة المشروع
+    new Chart(document.getElementById('statusChart'), {
+      type: 'bar',
+      data: {
+        labels: ['يعمل بالكامل', 'يعمل جزئيًا', 'لم يبدأ'],
+        datasets: [{
+          label: 'المشاريع',
+          data: data.status,
+          backgroundColor: ['#1DA0C4', '#EE1313', '#60808A'],
+          borderColor: '#ffffff',
+          borderWidth: 1,
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            enabled: true,
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+          }
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { color: '#60808A' } },
+          x: { ticks: { color: '#60808A' } }
+        }
+      }
+    });
+
+    // رسم بياني لفائدة التدريب
+    new Chart(document.getElementById('usefulnessChart'), {
+      type: 'pie',
+      data: {
+        labels: ['مفيد جدًا', 'مفيد جزئيًا'],
+        datasets: [{
+          data: data.usefulness,
+          backgroundColor: ['#1DA0C4', '#EE1313'],
+          borderColor: '#ffffff',
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: {
+            enabled: true,
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+          }
+        }
+      }
+    });
+
+    // رسم بياني لنمو قاعدة العملاء
+    new Chart(document.getElementById('clientsChart'), {
+      type: 'bar',
+      data: {
+        labels: ['زيادة', 'ثابت'],
+        datasets: [{
+          label: 'المستجيبون',
+          data: data.clients,
+          backgroundColor: ['#1DA0C4', '#EE1313'],
+          borderColor: '#ffffff',
+          borderWidth: 1,
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            enabled: true,
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+          }
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { color: '#60808A' } },
+          x: { ticks: { color: '#60808A' } }
+        }
+      }
+    });
+
+    // رسم بياني لتوسعة الأعمال
+    new Chart(document.getElementById('expansionChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['تم التوسع', 'لم يتم التوسع'],
+        datasets: [{
+          data: data.expansion,
+          backgroundColor: ['#1DA0C4', '#EE1313'],
+          borderColor: '#ffffff',
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: {
+            enabled: true,
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
